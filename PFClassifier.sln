@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFClassifier", "PFClassifier\PFClassifier.csproj", "{D7F18D69-564D-4EBC-9289-E8A1D7521F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Trainer\Trainer.csproj", "{E696B38B-7494-4FD8-ACA2-8EFD005B869D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabelBox", "LabelBox\LabelBox.csproj", "{13E7FA90-CBE9-4594-B94C-E37297268EE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{84EE9CCE-7B9F-480A-BA37-A3BA740D3EA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7F18D69-564D-4EBC-9289-E8A1D7521F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7F18D69-564D-4EBC-9289-E8A1D7521F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7F18D69-564D-4EBC-9289-E8A1D7521F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7F18D69-564D-4EBC-9289-E8A1D7521F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E696B38B-7494-4FD8-ACA2-8EFD005B869D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E696B38B-7494-4FD8-ACA2-8EFD005B869D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13E7FA90-CBE9-4594-B94C-E37297268EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13E7FA90-CBE9-4594-B94C-E37297268EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84EE9CCE-7B9F-480A-BA37-A3BA740D3EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84EE9CCE-7B9F-480A-BA37-A3BA740D3EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal

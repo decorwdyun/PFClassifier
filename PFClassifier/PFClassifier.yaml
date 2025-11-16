@@ -1,0 +1,12 @@
+name: PFClassifier
+author: decorwdyun
+description: |-
+  CN Only！前置依赖，提供 IPC 供 PFRadar 调用，原理为机器学习分类，可能存在极少量的识别错误
+  没有任何界面，安装即可（不使用 PFR 的招募分类功能的话无需安装）
+punchline: CN Only! PFRadar 高难招募分类器前置依赖 一键过滤开荒、伐木、老板队、固定队招募，没有任何界面，安装即可
+repo_url: https://github.com/decorwdyun/PFClassifier
+icon_url: https://raw.githubusercontent.com/decorwdyun/DalamudPlugins/main/PFClassifier/icon.png
+tags:
+  - PFRadar
+  - PFClassifier
+  - 招募

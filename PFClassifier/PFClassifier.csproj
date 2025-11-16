@@ -1,0 +1,37 @@
+﻿<Project Sdk="Dalamud.NET.Sdk/13.1.0">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>x64</Platforms>
+        <PathMap Condition="$(SolutionDir) != ''">$(SolutionDir)=X:\</PathMap>
+        <Version>1.0</Version>
+        <Configurations>Debug;Release</Configurations>
+        <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <Optimize>True</Optimize>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ECommons" Version="3.0.1.26"/>
+        <PackageReference Include="Microsoft.ML" Version="5.0.0"/>
+        <PackageReference Include="Microsoft.ML.LightGbm" Version="5.0.0"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="Models/intent_model.zip" />
+    </ItemGroup>
+    
+    <Target Name="CopyModelFile" BeforeTargets="BeforeBuild">
+        <Copy SourceFiles="../Trainer/Models/intent_model.zip"
+              DestinationFolder="$(ProjectDir)Models"
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

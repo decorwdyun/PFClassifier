@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <Target Name="PackagePluginDebug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <DalamudPackager
+                ProjectDir="$(ProjectDir)"
+                OutputPath="$(OutputPath)"
+                AssemblyName="$(AssemblyName)"
+                MakeZip="false"
+                VersionComponents="2"/>
+    </Target>
+
+    <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+        <DalamudPackager
+                ProjectDir="$(ProjectDir)"
+                OutputPath="$(OutputPath)"
+                AssemblyName="$(AssemblyName)"
+                MakeZip="true"
+                VersionComponents="2"
+                Exclude="PFClassifier.deps.json;runtimes/linux-arm/native/libLdaNative.so;runtimes/linux-arm/native/libLdaNative.so.dbg;runtimes/linux-arm64/native/libLdaNative.so;runtimes/linux-arm64/native/libLdaNative.so.dbg;runtimes/linux-x64/native/libFastTreeNative.so;runtimes/linux-x64/native/libFastTreeNative.so.dbg;runtimes/linux-x64/native/libLdaNative.so;runtimes/linux-x64/native/libLdaNative.so.dbg;runtimes/linux-x64/native/lib_lightgbm.so;runtimes/osx-arm64/native/libLdaNative.dylib;runtimes/osx-arm64/native/libLdaNative.dylib.dwarf;runtimes/osx-x64/native/libFastTreeNative.dylib;runtimes/osx-x64/native/libFastTreeNative.dylib.dwarf;runtimes/osx-x64/native/libLdaNative.dylib;runtimes/osx-x64/native/libLdaNative.dylib.dwarf;runtimes/osx-x64/native/lib_lightgbm.dylib;runtimes/win-arm64/native/LdaNative.dll;runtimes/win-x86/native/FastTreeNative.dll;runtimes/win-x86/native/LdaNative.dll"/>
+    </Target>
+</Project>
