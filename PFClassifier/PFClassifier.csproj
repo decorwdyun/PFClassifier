@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
         <PathMap Condition="$(SolutionDir) != ''">$(SolutionDir)=X:\</PathMap>
-        <Version>1.0</Version>
+        <Version>1.1</Version>
         <Configurations>Debug;Release</Configurations>
         <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
     </PropertyGroup>
