@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using ECommons.DalamudServices;
 using Microsoft.ML;
@@ -36,7 +37,6 @@ public partial class IntentClassifier : IDisposable
             throw new InvalidOperationException("Model not loaded.");
         }
 
-        var predictedLabel = "";
         float maxScore = 0;
 
         var input = new IntentInput
@@ -45,11 +45,15 @@ public partial class IntentClassifier : IDisposable
         };
 
         var prediction = _predictionEngine.Predict(input);
-        predictedLabel = prediction.PredictedLabel;
+        var predictedLabel = prediction.PredictedLabel;
         // predictedLabel = CleanLabel(prediction.PredictedLabel);
         maxScore = prediction.Score.Prepend(maxScore).Max();
-
-        return Enum.TryParse(predictedLabel, out Category category) ? (category, maxScore) : (Category.未知, 0);
+        if (Enum.TryParse(predictedLabel, out Category category))
+        {
+            Svc.Log.Debug($"模型预测：{category} 置信度：{maxScore:P2}，文本：{description}");
+            return (category, maxScore);
+        }
+        return (Category.未知, 0);
     }
 
     private string NormalizeText(string text)
