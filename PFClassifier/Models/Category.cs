@@ -7,5 +7,6 @@ public enum Category : byte
     伐木,
     老板队,
     固定队,
-    其他
+    其他,
+    广告
 }
