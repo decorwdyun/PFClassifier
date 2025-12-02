@@ -32,6 +32,7 @@ public partial class IntentClassifier : IDisposable
 
     public (Category, float) ClassifyText(string description)
     {
+        var sw = Stopwatch.StartNew();
         if (_predictionEngine == null)
         {
             throw new InvalidOperationException("Model not loaded.");
@@ -46,11 +47,12 @@ public partial class IntentClassifier : IDisposable
 
         var prediction = _predictionEngine.Predict(input);
         var predictedLabel = prediction.PredictedLabel;
-        // predictedLabel = CleanLabel(prediction.PredictedLabel);
         maxScore = prediction.Score.Prepend(maxScore).Max();
+        
+        sw.Stop();
         if (Enum.TryParse(predictedLabel, out Category category))
         {
-            Svc.Log.Debug($"模型预测：{category} 置信度：{maxScore:P2}，文本：{description}");
+            Svc.Log.Debug($"模型预测：{category} 置信度：{maxScore:P2}，耗时：{sw.Elapsed.TotalMilliseconds:F2}ms，文本：{description}");
             return (category, maxScore);
         }
         return (Category.未知, 0);
