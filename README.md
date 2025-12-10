@@ -1,6 +1,6 @@
 ﻿# PFClassifier
 
-FF14 的高难招募分类过滤器，基于机器学习（CN Only），只学习了中文招募，非中文游戏客户端请不要安装
+FF14 的高难招募分类过滤器，基于机器学习（CN Only），只学习了简体中文招募，非简体中文游戏客户端请不要安装
 
 High-end Duty Recruitment Category Filter (CN Only) — powered by machine learning.
 It’s trained only on Chinese recruitment listings, so please don’t install it if you’re using a non-Chinese game client.
