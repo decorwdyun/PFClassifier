@@ -20,20 +20,6 @@ public class PFClassifier : IDalamudPlugin
         {
             throw new InvalidOperationException("This plugin is not compatible with your client.");
         }
-        
-        bool RepoCheck()
-        {
-            var sourceRepository = pi.SourceRepository;
-            return sourceRepository == "https://gp.xuolu.com/love.json" || sourceRepository.Contains("decorwdyun/DalamudPlugins", StringComparison.OrdinalIgnoreCase);
-        }
-
-        if (pi.IsDev || !RepoCheck())
-        {
-            toastGui.ShowError("此插件禁止本地加载，\n" +
-                               "此插件禁止本地加载，\n" +
-                               "此插件禁止本地加载，\n");
-            throw new InvalidOperationException("此插件禁止本地加载。");
-        }
 #endif
     
         ECommonsMain.Init(pi, this);
