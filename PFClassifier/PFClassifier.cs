@@ -1,38 +1,35 @@
 ﻿using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
-using ECommons;
-using ECommons.DalamudServices;
-using ECommons.SimpleGui;
+using PFClassifier.Classifier;
 using PFClassifier.IPC;
-using PFClassifier.Services;
+using IntentClassifier = PFClassifier.Classifier.IntentClassifier;
 
 namespace PFClassifier;
 
 // ReSharper disable once InconsistentNaming
 public class PFClassifier : IDalamudPlugin
 {
-    private readonly IntentClassifier _intentClassifier;
+    private readonly IIntentClassifier _intentClassifier;
+    private readonly IpcProvider _ipcProvider;
 
-    public PFClassifier(IDalamudPluginInterface pi, IClientState clientState, IToastGui toastGui)
+    public PFClassifier(IDalamudPluginInterface pi)
     {
+        pi.Create<DalamudService>();
 #if RELEASE
-        if ((uint)clientState.ClientLanguage != 4)
+        if ((uint)DalamudService.ClientState.ClientLanguage != 4)
         {
             throw new InvalidOperationException("This plugin is not compatible with your client.");
         }
 #endif
-    
-        ECommonsMain.Init(pi, this);
-        
-        _intentClassifier = new IntentClassifier();
-        _intentClassifier.LoadModelFromEmbeddedResource();
 
-        _ = new IpcProvider(_intentClassifier);
+        _intentClassifier = new CachedIntentClassifier(new IntentClassifier());
+        _intentClassifier.LoadModelFromEmbeddedResource();
+        _ipcProvider = new IpcProvider(_intentClassifier);
     }
 
     public void Dispose()
     {
+        _ipcProvider.Dispose();
         _intentClassifier.Dispose();
-        ECommonsMain.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

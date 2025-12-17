@@ -1,26 +1,37 @@
-﻿using ECommons.EzIpcManager;
+﻿using Dalamud.Plugin.Ipc;
+using PFClassifier.Classifier;
 using PFClassifier.Models;
-using PFClassifier.Services;
 
 namespace PFClassifier.IPC;
 
 public class IpcProvider : IDisposable
 {
-    private readonly IntentClassifier _classifier;
+    private const string IpcClassifyText = "PFClassifier.ClassifyText";
+    private const string IpcVersion = "PFClassifier.Version";
+    private readonly IIntentClassifier _classifier;
 
-    public IpcProvider(IntentClassifier classifier)
+    private readonly ICallGateProvider<string, (Category, float)> _classifyText;
+    private readonly ICallGateProvider<Version> _version;
+
+    public IpcProvider(IIntentClassifier classifier)
     {
         _classifier = classifier;
-        EzIPC.Init(this);
+
+        _classifyText = DalamudService.PluginInterface.GetIpcProvider<string, (Category, float)>(IpcClassifyText);
+        _classifyText.RegisterFunc(ClassifyText);
+
+        _version = DalamudService.PluginInterface.GetIpcProvider<Version>(IpcVersion);
+        _version.RegisterFunc(() => typeof(PFClassifier).Assembly.GetName().Version!);
     }
 
-    [EzIPC]
-    public (Category, float) ClassifyText(string description)
-    {
-        return _classifier.ClassifyText(description);
-    }
-    
     public void Dispose()
     {
+        _classifyText.UnregisterFunc();
+        _version.UnregisterFunc();
+    }
+
+    private (Category, float) ClassifyText(string description)
+    {
+        return _classifier.ClassifyText(description);
     }
 }
