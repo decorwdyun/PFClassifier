@@ -1,0 +1,87 @@
+﻿name: .NET Build & Auto Release
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Check Version
+        id: check_version
+        shell: pwsh
+        run: |
+          [xml]$xml = Get-Content PFClassifier/PFClassifier.csproj
+          $version = $xml.Project.PropertyGroup.Version
+          
+          $tagName = "v$version"
+          
+          Write-Host "Detected Version in csproj: $version"
+          Write-Host "Target Tag: $tagName"
+          
+          $tagExists = git tag -l $tagName
+          
+          if ($tagExists) {
+            Write-Host "Tag $tagName already exists. Skipping release."
+            echo "SHOULD_RELEASE=false" >> $env:GITHUB_ENV
+          } else {
+            Write-Host "Tag $tagName does not exist. New version detected!"
+            echo "SHOULD_RELEASE=true" >> $env:GITHUB_ENV
+            echo "RELEASE_TAG=$tagName" >> $env:GITHUB_ENV
+          }
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x.x'
+
+      - name: Download Dalamud
+        run: |
+          Invoke-WebRequest -Uri https://raw.githubusercontent.com/ottercorp/dalamud-distrib/main/stg/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncherCN\addon\Hooks\dev\"
+
+      - name: Build
+        run: |
+          dotnet build --configuration Release --nologo PFClassifier/PFClassifier.csproj
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./PFClassifier/bin/Release/PFClassifier/*.zip
+
+      - name: Create Git Tag
+        if: env.SHOULD_RELEASE == 'true'
+        shell: pwsh
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          $tagName = $env:RELEASE_TAG
+          
+          git tag $tagName
+          git push origin $tagName
+          Write-Host "Created and pushed tag: $tagName"
+
+      - name: Create Release
+        if: env.SHOULD_RELEASE == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_TAG }}
+          files: ./PFClassifier/bin/Release/PFClassifier/*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
