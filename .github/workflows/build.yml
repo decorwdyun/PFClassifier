@@ -3,7 +3,7 @@
 on:
   push:
     branches:
-      - main
+      - master
     tags-ignore:
       - '*'
 
@@ -24,8 +24,14 @@ jobs:
         shell: pwsh
         run: |
           [xml]$xml = Get-Content PFClassifier/PFClassifier.csproj
-          $version = $xml.Project.PropertyGroup.Version
-          
+          $rawVersion = $xml.Project.PropertyGroup.Version
+          $version = ($rawVersion | Select-Object -First 1).Trim()
+  
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            Write-Host "Version not found or empty in csproj, skip release."
+            echo "SHOULD_RELEASE=false" >> $env:GITHUB_ENV
+            exit 0
+          }
           $tagName = "v$version"
           
           Write-Host "Detected Version in csproj: $version"
@@ -50,7 +56,7 @@ jobs:
       - name: Download Dalamud
         run: |
           Invoke-WebRequest -Uri https://raw.githubusercontent.com/ottercorp/dalamud-distrib/main/stg/latest.zip -OutFile latest.zip
-          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncherCN\addon\Hooks\dev\"
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
 
       - name: Build
         run: |
@@ -69,8 +75,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          $tagName = $env:RELEASE_TAG
-          
+          $tagName = $env:RELEASE_TAG.Trim()
+          if ([string]::IsNullOrWhiteSpace($tagName)) {
+            Write-Host "Release tag is empty, skip tagging."
+            exit 0
+          }
           git tag $tagName
           git push origin $tagName
           Write-Host "Created and pushed tag: $tagName"

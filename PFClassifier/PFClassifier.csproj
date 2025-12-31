@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PathMap Condition="$(SolutionDir) != ''">$(SolutionDir)=X:\</PathMap>
-        <Version>1.2.2</Version>
+        <Version>1.2.3</Version>
         <Configurations>Debug;Release</Configurations>
         <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
     </PropertyGroup>
@@ -25,8 +25,8 @@
         <EmbeddedResource Include="Models/intent_model.zip"/>
     </ItemGroup>
 
-    <Target Name="CopyModelFile" BeforeTargets="BeforeBuild">
-        <Copy SourceFiles="../Trainer/Models/intent_model.zip"
+    <Target Name="CopyModelFile" BeforeTargets="BeforeBuild" Condition="Exists('..\Trainer\Models\intent_model.zip') ">
+        <Copy SourceFiles="..\Trainer\Models\intent_model.zip"
               DestinationFolder="$(ProjectDir)Models"
               SkipUnchangedFiles="true"/>
     </Target>
