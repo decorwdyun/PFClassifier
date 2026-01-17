@@ -71,7 +71,7 @@ public partial class IntentClassifier : IIntentClassifier
 
         foreach (var c in text)
         {
-            if (c is '\r' or '\n' or ';' or '；' or '"' or '“' or '”')
+            if (c is '\r' or '\n' or ';' or '；' or '"' or '“' or '”' or ',' or '，')
             {
                 sb.Append(' ');
                 continue;
