@@ -13,6 +13,6 @@ It’s trained only on Chinese recruitment listings, so please don’t install i
 
 ## 效果演示
 
-**早期插件功能演示，随着版本迭代，界面及插件效果可能会有变动**
+**随着版本迭代，界面及插件效果可能会有变动**
 
 ![screenshot_pfc](./Screenshot/ScreenShot-PFClassifier-01.png)
